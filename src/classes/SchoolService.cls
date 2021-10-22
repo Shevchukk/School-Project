@@ -68,7 +68,7 @@ public class SchoolService {
                               ORDER BY Grade__c NULLS FIRST
                               LIMIT 1]);
 
-            if (classEnrol.size() == 0 || classEnrol[0].Grade__c == null) {
+            if (classEnrol.isEmpty() || classEnrol[0].Grade__c == null) {
                 System.debug('A scholarship cannot be assigned yet.');
                 return ;
             }
