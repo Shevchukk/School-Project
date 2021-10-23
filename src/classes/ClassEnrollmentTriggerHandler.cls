@@ -50,4 +50,3 @@ public with sharing class ClassEnrollmentTriggerHandler {
    }
 
 }
-

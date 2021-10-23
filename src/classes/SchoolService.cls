@@ -18,9 +18,9 @@ public class SchoolService {
                                                 FROM Class_Enrollment__c                                // junction wich use already
                                                 WHERE Student__c =: studentId       // related class and student
                                                 AND Class__c =: classId];
-        classEnrtoUpdate.Grade__c = grade;
+        classEnrToUpdate.Grade__c = grade;
         try {
-            update classEnrtoUpdate;
+            update classEnrToUpdate;
         } catch (DmlException e) {
             System.debug('The following exception has occurred: ' + e.getMessage());
         }
@@ -32,9 +32,9 @@ public class SchoolService {
         Class_Enrollment__c classEnrtoUpdate = [SELECT Grade__c
                                                 FROM Class_Enrollment__c
                                                 WHERE Id =: classEnrollmentId];
-        classEnrtoUpdate.Grade__c = grade;
+        classEnrToUpdate.Grade__c = grade;
         try {
-            update classEnrtoUpdate;
+            update classEnrToUpdate;
         } catch (DmlException e) {
             System.debug('The following exception has occurred: ' + e.getMessage());
         }
@@ -72,8 +72,8 @@ public class SchoolService {
                 System.debug('A scholarship cannot be assigned yet.');
                 return ;
             }
-            Decimal averageGrade = classEnrol[1].Student__r.Average_Grade__c;
-            //AccNum = string.valueOf(Servic[0].Account_Customer_Account_Number__c
+            Decimal averageGrade = classEnrol[0].Student__r.Average_Grade__c;  
+
             if (averageGrade >= 71.0) {
                 scholarship = 'Regular';
                 if (averageGrade >= 88.0) {

@@ -9,8 +9,7 @@ public class SchoolDAO {
         		]) {
            studentAverageGrade.put(curStu.Id, curStu.Average_Grade__c); 
         }
-       
-    	System.debug(studentAverageGrade);
+        System.debug(studentAverageGrade);
         return studentAverageGrade;    
     }
     
@@ -56,14 +55,14 @@ public class SchoolDAO {
              	FROM Class_Enrollment__c
              	WHERE Class_Enrollment__c.Class__c =: classId
              	AND Class_Enrollment__c.Student__r.Scholarship__c in: Scholarships 
-             	]){
-             hasScholarshipId.add(curEnr.Student__r.Id);                                
+        	]){
+        	hasScholarshipId.add(curEnr.Student__r.Id);                                
         }
         List<Student__c> hasScholarship = [
-            	SELECT Student__c.Id, Name
-            	FROM Student__c
-            	WHERE Student__c.Id in: hasScholarshipId
-                ];
+            SELECT Student__c.Id, Name
+            FROM Student__c
+            WHERE Student__c.Id in: hasScholarshipId
+        ];
         System.Debug(hasScholarship);
         return hasScholarship;
     }
