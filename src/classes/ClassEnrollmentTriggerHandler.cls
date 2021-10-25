@@ -11,7 +11,7 @@ public with sharing class ClassEnrollmentTriggerHandler {
       										 FROM Class_Enrollment__c
       										 WHERE Student__c IN: studentIds];
        for (Class_Enrollment__c tr : enrollFromTrigger) {
-           for (Class_Enrollment__c ex : exEnroll) {     //need to make a map to avoid an extra cycle???
+           for (Class_Enrollment__c ex : exEnroll) {     
                if (tr.Student__c == ex.Student__r.Id && tr.Class__c == ex.Class__r.Id) {
                    tr.Class__c.addError('The student is already studying in this class!');
                }

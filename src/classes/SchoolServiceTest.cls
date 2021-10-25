@@ -188,33 +188,28 @@
     //negative test
     @isTest static void setAcademicScholarshipWrongValueTest() {
         
-        Test.startTest();
-        Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);  //How to catch Exception???
-        SchoolService.setAcademicScholarship('a000900000Glc7FAAR');     
+        Test.startTest(); 
+        SchoolService.setAcademicScholarship(null);     
         List<Student__c> actualResult = [
             SELECT Scholarship__c
             FROM Student__c
-            WHERE Id =: studentS1.Id 
-            AND Scholarship__c = 'Academic'
+            WHERE Scholarship__c = 'Academic' 
         ];
         Test.stopTest();
             
         System.assertEquals( 
-            0, 
+            null, 
             actualResult.size(), 
-            'School.Service.setAcademicScholarship is working incorrectly.'
+            'SchoolService.setAcademicScholarship must not return anything.'
         );
     }
     
     //positive test
-    @isTest static void recalculateScholarshipTest() {    //+create the negative test
+    @isTest static void recalculateScholarshipValueUnasignedTest() {    
         
         Test.startTest();
         List<Student__c> students = [SELECT Id FROM Student__c ORDER BY Name];
-        SchoolService.recalculateScholarship(students.get(0).Id);
-        SchoolService.recalculateScholarship(students.get(1).Id);           
-        SchoolService.recalculateScholarship(students.get(2).Id);
-        SchoolService.recalculateScholarship(students.get(3).Id);
+        SchoolService.recalculateScholarship(students.get(0).Id);         
         List<Student__c> actualResult = [
             SELECT Scholarship__c
             FROM Student__c
@@ -227,23 +222,83 @@
             actualResult.get(0).Scholarship__c, 
             'School.Service.recalculateScholarship is working incorrectly.'
         );
+    }
+    
+    //positive test
+    @isTest static void recalculateScholarshipValueRegularTest() {    
+        
+        Test.startTest();
+        List<Student__c> students = [SELECT Id FROM Student__c ORDER BY Name];
+        SchoolService.recalculateScholarship(students.get(1).Id);           
+        List<Student__c> actualResult = [
+            SELECT Scholarship__c
+            FROM Student__c
+            ORDER BY Name
+        ];
+        Test.stopTest();
         
         System.assertEquals( 
             'Regular', 
             actualResult.get(1).Scholarship__c, 
             'School.Service.recalculateScholarship is working incorrectly.'
         );
+    }
+    
+    //positive test
+    @isTest static void recalculateScholarshipValueIncreasedTest() {    
+        
+        Test.startTest();
+        List<Student__c> students = [SELECT Id FROM Student__c ORDER BY Name];
+        SchoolService.recalculateScholarship(students.get(2).Id);
+        List<Student__c> actualResult = [
+            SELECT Scholarship__c
+            FROM Student__c
+            ORDER BY Name
+        ];
+        Test.stopTest();
         
         System.assertEquals( 
             'Increased', 
             actualResult.get(2).Scholarship__c, 
             'School.Service.recalculateScholarship is working incorrectly.'
-        );
+        );    
+    }
+    
+    //negative
+    @isTest static void recalculateScholarshipValueErrorTest() {    
+        
+        Test.startTest();
+        List<Student__c> students = [SELECT Id FROM Student__c ORDER BY Name];
+        SchoolService.recalculateScholarship(students.get(3).Id);         
+        List<Student__c> actualResult = [
+            SELECT Scholarship__c
+            FROM Student__c
+            ORDER BY Name
+        ];
+        Test.stopTest();
         
         System.assertEquals( 
             'A scholarship cannot be assigned yet.', 
             actualResult.get(3).getErrors()[0].getMessage() 
         );
+    }        
+        
+    //negative
+    @isTest static void recalculateScholarshipNULLTest() {    
+        
+        Test.startTest();
+        SchoolService.recalculateScholarship(NULL);         
+        List<Student__c> actualResult = [
+            SELECT Scholarship__c
+            FROM Student__c
+            ORDER BY Name
+        ];
+        Test.stopTest();
+        
+        System.assertEquals( 
+            Null, 
+            actualResult.get(0),
+            'SchoolService.recalculateScholarship must not return anything.'
+        );
     }
-    
 }

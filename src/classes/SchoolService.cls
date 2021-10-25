@@ -46,12 +46,10 @@ public class SchoolService {
         Student__c studentToUpdate = [SELECT Scholarship__c
                                       FROM Student__c
                                       WHERE Id =: studentId];
-        studentToUpdate.Scholarship__c = 'Academic';
-        try {
+        if (studentToUpdate != null){
+            studentToUpdate.Scholarship__c = 'Academic';
             update studentToUpdate;
-        } catch (DmlException e) {
-            System.debug('The following exception has occurred: ' + e.getMessage());
-        }
+    	}
     }
 
     /*  Calculate if the student has a scholarship by the results of the year.
@@ -86,11 +84,7 @@ public class SchoolService {
 
             Student__c studentToUpdate = classEnrol[0].Student__r;
             studentToUpdate.Scholarship__c = scholarship;
-
-            try {
-                update studentToUpdate;
-            } catch (DmlException e) {
-                System.debug('The following exception has occurred: ' + e.getMessage());
-            }
+            update studentToUpdate;
+            
     }
 }
