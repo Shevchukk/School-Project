@@ -6,7 +6,6 @@ public with sharing class CurClassesHelper {
 
         return [SELECT Class__r.Name, Class__r.Subject__c, Grade__c
                 FROM Class_Enrollment__c
-                WHERE Class__r.Year__c =:curYear  AND Student__c =: curRecordId
-                LIMIT 20];
+                WHERE Class__r.Year__c =:curYear  AND Student__c =: curRecordId];
     }
 }

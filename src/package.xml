@@ -1,36 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>ClassEnrollmentTriggerHandler</members>
+        <members>ClassEnrollmentTriggerTest</members>
+        <members>CurClassesHelper</members>
+        <members>MathUtils</members>
+        <members>OlderAccountsUtility</members>
+        <members>ScheduleScholarshipRateUpdate</members>
+        <members>ScholarshipRate</members>
+        <members>SchoolDAO</members>
+        <members>SchoolDAOTest</members>
+        <members>SchoolService</members>
+        <members>SchoolServiceTest</members>
+        <members>StudentWithScholarshipsController</members>
         <name>ApexClass</name>
     </types>
     <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>*</members>
+        <members>ClassEnrollmentTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
-        <members>*</members>
+        <members>studentsWithScholarship</members>
         <name>AuraDefinitionBundle</name>
     </types>
     <types>
-        <members>*</members>
+        <members>currentClasses</members>
+        <members>main</members>
+        <members>myLWS</members>
         <name>LightningComponentBundle</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>StaticResource</name>
-    </types>
-    <types>
-        <members>SampleAuraComponent</members>
-        <name>AuraDefinitionBundle</name>
     </types>
     <version>53.0</version>
 </Package>
