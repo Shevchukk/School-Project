@@ -5,11 +5,10 @@ public class MathUtils {
             sum += i;
         }
         if(nums.size() > 0) {
-        	//System.debug(sum/nums.size());
+
        	 	return sum/nums.size();
         }
         else {
-            //System.debug('List is empty');
             return 0.0;
         }
     }

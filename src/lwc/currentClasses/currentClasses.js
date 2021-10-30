@@ -1,6 +1,7 @@
 import { LightningElement, wire, api } from 'lwc';
 import getClasses from '@salesforce/apex/CurClassesHelper.getClasses';
 
+
 const columns = [
     { label: 'Class Name', fieldName: 'Name', type: 'text' },
     { label: 'Subject', fieldName: 'Subject__c', type: 'text' },
@@ -25,7 +26,6 @@ export default class BasicDatatable extends LightningElement {
                 rowData.Grade__c = row.Grade__c;
                 this.data.push(rowData);
             }) ;
-
         }
     }
 }

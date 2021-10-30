@@ -19,11 +19,8 @@ public class SchoolService {
                                                 WHERE Student__c =: studentId       // related class and student
                                                 AND Class__c =: classId];
         classEnrToUpdate.Grade__c = grade;
-        try {
             update classEnrToUpdate;
-        } catch (DmlException e) {
-            System.debug('The following exception has occurred: ' + e.getMessage());
-        }
+
     }
 
     //Set grade for given class enrollment.

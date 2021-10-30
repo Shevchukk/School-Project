@@ -4,7 +4,7 @@
         Student__c s1 = new Student__c(Name = 'Student 1', Year_of_Study__c = '3', Average_Grade__c = 5);
         Student__c s2 = new Student__c(Name = 'Student 2', Year_of_Study__c = '3', Average_Grade__c = 77);
         Student__c s3 = new Student__c(Name = 'Student 3', Year_of_Study__c = '3', Average_Grade__c = 89);
-        Student__c s4 = new Student__c(Name = 'Student 4', Year_of_Study__c = '3');
+        Student__c s4 = new Student__c(Name = 'Student 4', Year_of_Study__c = '3', Average_Grade__c = null);
         Student__c s5 = new Student__c(Name = 'Student 5', Year_of_Study__c = '3'); 
         insert new List<Student__c>{s1, s2, s3, s4, s5};
         
@@ -58,7 +58,7 @@
         Test.stopTest();
             
         System.assertEquals( 
-            0, 
+            1,
             actualResult.size(), 
             'Class should return empty list'
         );
@@ -88,29 +88,7 @@
             'SchoolService.setGrade is working incorrectly'
         );
     }
-    
-    //negative test
-    @isTest static void setGradeUsingStudentAndClassWrongValueTest() { 
-        
-        Test.startTest();
-        Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
-        Class__c classC1 = [SELECT Id FROM Class__c WHERE Subject__c = 'Algebra'].get(0);
-        SchoolService setMaxGrade = new SchoolService();
-        setMaxGrade.setGrade(studentS1.Id, classC1.Id, 125);
-        List<Class_Enrollment__c> actualResult = [
-            SELECT Grade__c 
-            FROM Class_Enrollment__c
-            WHERE Class__c =: classC1.Id
-            AND  Student__c =: studentS1.Id
-        ];
-        Test.stopTest();
-            
-        System.assertEquals( 
-            0, 
-            actualResult.size(), 
-            'SchoolService.setGrade schould return empty List'
-        );
-    }
+
     
     
     //positive test
@@ -150,17 +128,17 @@
         	AND Class__r.Subject__c = 'Algebra'
         ].get(0);
         SchoolService setMaxGrade = new SchoolService();
-        setMaxGrade.setGrade(classEnrollmentCe1.Id, -26);
-        List<Class_Enrollment__c> actualResult = [
+        setMaxGrade.setGrade(classEnrollmentCe1.Id, -128);
+        Class_Enrollment__c actualResult = [
             SELECT Grade__c 
             FROM Class_Enrollment__c
             WHERE Id =: classEnrollmentCe1.Id
-        ];
+        ].get(0);
         Test.stopTest();
             
         System.assertEquals( 
-            0, 
-            actualResult.size(), 
+            5,
+            actualResult.Grade__c,
             'SchoolService.setGrade is working incorrectly'
         );
     }
@@ -171,38 +149,20 @@
         Test.startTest();
         Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
         SchoolService.setAcademicScholarship(studentS1.Id);
-        List<Student__c> actualResult = [
+        Student__c actualResult = [
             SELECT Scholarship__c
             FROM Student__c
             WHERE Id =: studentS1.Id
-        ];
+        ].get(0);
         Test.stopTest();
             
         System.assertEquals( 
             'Academic', 
-            actualResult.get(1).Scholarship__c, 
+            actualResult.Scholarship__c,
             'School.Service.setAcademicScholarship is working incorrectly.'
         );
     }
-    
-    //negative test
-    @isTest static void setAcademicScholarshipWrongValueTest() {
-        
-        Test.startTest(); 
-        SchoolService.setAcademicScholarship(null);     
-        List<Student__c> actualResult = [
-            SELECT Scholarship__c
-            FROM Student__c
-            WHERE Scholarship__c = 'Academic' 
-        ];
-        Test.stopTest();
-            
-        System.assertEquals( 
-            null, 
-            actualResult.size(), 
-            'SchoolService.setAcademicScholarship must not return anything.'
-        );
-    }
+
     
     //positive test
     @isTest static void recalculateScholarshipValueUnasignedTest() {    
@@ -218,7 +178,7 @@
         Test.stopTest();
         
         System.assertEquals( 
-            'Unasigned', 
+            'Unassigned',
             actualResult.get(0).Scholarship__c, 
             'School.Service.recalculateScholarship is working incorrectly.'
         );
@@ -263,42 +223,25 @@
             'School.Service.recalculateScholarship is working incorrectly.'
         );    
     }
-    
-    //negative
-    @isTest static void recalculateScholarshipValueErrorTest() {    
-        
+
+    //negative test
+    @isTest static void recalculateScholarshipValueNullTest() {
+
         Test.startTest();
         List<Student__c> students = [SELECT Id FROM Student__c ORDER BY Name];
-        SchoolService.recalculateScholarship(students.get(3).Id);         
+        SchoolService.recalculateScholarship(students.get(3).Id);
         List<Student__c> actualResult = [
-            SELECT Scholarship__c
-            FROM Student__c
-            ORDER BY Name
+                SELECT Scholarship__c
+                FROM Student__c
+                ORDER BY Name
         ];
         Test.stopTest();
-        
-        System.assertEquals( 
-            'A scholarship cannot be assigned yet.', 
-            actualResult.get(3).getErrors()[0].getMessage() 
-        );
-    }        
-        
-    //negative
-    @isTest static void recalculateScholarshipNULLTest() {    
-        
-        Test.startTest();
-        SchoolService.recalculateScholarship(NULL);         
-        List<Student__c> actualResult = [
-            SELECT Scholarship__c
-            FROM Student__c
-            ORDER BY Name
-        ];
-        Test.stopTest();
-        
-        System.assertEquals( 
-            Null, 
-            actualResult.get(0),
-            'SchoolService.recalculateScholarship must not return anything.'
+
+        System.assertNotEquals(
+                'Increased',
+                actualResult.get(3).Scholarship__c,
+                'School.Service.recalculateScholarship is working incorrectly.'
         );
     }
+
 }

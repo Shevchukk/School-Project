@@ -1,7 +1,3 @@
-/**
- * Created by Lenovo on 25.10.2021.
- */
-
 public with sharing class StudentWithScholarshipsController {
     @AuraEnabled
     public static List<Student__c> getStudentsWithScholarship (Integer limitList) {

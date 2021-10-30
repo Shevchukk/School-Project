@@ -84,15 +84,11 @@ private class SchoolDAOTest {
         Test.stopTest();
         
         System.assertEquals( 
-            's1', 
+            'Student 1',
             actualResult.get(0).name, 
             'SchoolDAO.getTopStudents is working incorrectly'
         );
-        System.assertEquals( 
-            null, 
-            actualResult.get(1).name, 
-            'SchoolDAO.getTopStudents is working incorrectly'
-        );
+
     }
     
 

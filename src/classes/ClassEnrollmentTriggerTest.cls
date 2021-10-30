@@ -1,12 +1,13 @@
 @isTest 
 private class ClassEnrollmentTriggerTest {
     
-    @testSetup static void setup() {
+    @TestSetup static void setup() {
 		Student__c s1 = new Student__c(Name = 'Student 1', Year_of_Study__c = '3');
     	Class__c c1 = new Class__c(Subject__c = 'Algebra', Year_of_Study__c = '3');
-        Class__c c2 = new Class__c(Subject__c = 'Biology', Year_of_Study__c = '5');
+        Class__c c2 = new Class__c(Subject__c = 'Biology', Year_of_Study__c = '1;2');
+        Class__c c3 = new Class__c(Subject__c = 'Geometry', Year_of_Study__c = '3');
         insert s1;
-        insert new List<Class__c>{c1, c2};
+        insert new List<Class__c>{c1, c2, c3};
         Class_Enrollment__c e1 = new Class_Enrollment__c(Class__c = c1.Id , Student__c = s1.Id , Grade__c = 58);
         insert e1;
     }
@@ -16,8 +17,8 @@ private class ClassEnrollmentTriggerTest {
         DmlException unexpectedException;
         test.startTest();
         Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
-        Class__c classC2 = [SELECT Id FROM Class__c WHERE Subject__c = 'Biology'].get(0);
-        Class_Enrollment__c classEnrollmetOnTrigger = new Class_Enrollment__c(Class__c = classC2.Id , Student__c = studentS1.Id , Grade__c = 95);
+        Class__c classC3 = [SELECT Id FROM Class__c WHERE Subject__c = 'Geometry'].get(0);
+        Class_Enrollment__c classEnrollmetOnTrigger = new Class_Enrollment__c(Class__c = classC3.Id , Student__c = studentS1.Id , Grade__c = 95);
         try {
             insert classEnrollmetOnTrigger;
         } catch (DmlException e) {
@@ -27,7 +28,7 @@ private class ClassEnrollmentTriggerTest {
         
         System.assertEquals( 
             null, 
-            unexpectedException, 
+            unexpectedException,
             'The record should be saved'
         );
     } 
@@ -35,10 +36,10 @@ private class ClassEnrollmentTriggerTest {
      // negative test
      @isTest static void preventDuplicateRelationTrigger() { 
         DmlException expectedException;
-        test.startTest();
         Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
         Class__c classC1 = [SELECT Id FROM Class__c WHERE Subject__c = 'Algebra'].get(0);
         Class_Enrollment__c classEnrollmetOnTrigger = new Class_Enrollment__c(Class__c = classC1.Id , Student__c = studentS1.Id , Grade__c = 95);
+         test.startTest();
         try {
             insert classEnrollmetOnTrigger;
         } catch (DmlException e) {
@@ -46,8 +47,8 @@ private class ClassEnrollmentTriggerTest {
         }
 		test.StopTest();
         
-        System.assertNotEquals( 
-            null, 
+        System.assertNotEquals(
+            null,
             expectedException, 
             'The record can`t be duplicated'
         );
@@ -59,8 +60,8 @@ private class ClassEnrollmentTriggerTest {
         DmlException unexpectedException;
         test.startTest();
         Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
-        Class__c classC1 = [SELECT Id FROM Class__c WHERE Subject__c = 'Algebra'].get(0);
-        Class_Enrollment__c classEnrollmetOnTrigger = new Class_Enrollment__c(Class__c = classC1.Id , Student__c = studentS1.Id , Grade__c = 95);
+        Class__c classC3 = [SELECT Id FROM Class__c WHERE Subject__c = 'Geometry'].get(0);
+        Class_Enrollment__c classEnrollmetOnTrigger = new Class_Enrollment__c(Class__c = classC3.Id , Student__c = studentS1.Id , Grade__c = 95);
         try {
             insert classEnrollmetOnTrigger;
         } catch (DmlException e) {
@@ -76,7 +77,7 @@ private class ClassEnrollmentTriggerTest {
     }
     
     //negative test
-    @isTest static void invalidYearOfStudyInTrigger() {   
+    @isTest static void invalidYearOfStudyInTrigger() {
         DmlException expectedException;
         test.startTest();
         Student__c studentS1 = [SELECT Id FROM Student__c WHERE Name = 'Student 1'].get(0);
@@ -89,10 +90,10 @@ private class ClassEnrollmentTriggerTest {
         }
 		test.StopTest();
         
-        System.assertEquals( 
+        System.assertNotEquals(
             null, 
             expectedException, 
-            'The record should be saved'
+            'Must be exception'
         );
     }
 }
