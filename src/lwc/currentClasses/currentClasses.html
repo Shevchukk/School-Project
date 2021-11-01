@@ -2,11 +2,12 @@
     <lightning-card title="Classes" class="slds-p-around_medium" icon-name="standard:education">
         <div>
             <lightning-datatable
-                key-field="id"
+                key-field="Id"
                 data={data}
                 columns={columns}
+                onrowaction={handleDeleteAction}
                 hide-checkbox-column="true">
             </lightning-datatable>
         </div>
-    </lightning-card>
+   </lightning-card>
 </template>
